@@ -5,7 +5,7 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Add your Expense.") }}
+            {{ __('Add your Expense.') }}
         </p>
     </header>
 
@@ -20,14 +20,19 @@
 
         <div>
             <x-input-label for="description" :value="__('Description')" />
-            <!-- <x-text-input id="description" name="description" type="text" class="mt-1 block w-full" :value="old('description', '')" autocomplete="Description" /> -->
-            <textarea name="description" id="description" cols="30" rows="5" class="mt-1 block w-full"> {{ old('description', '') }} </textarea>
+            {{-- <x-textarea-input id="description" name="description" class="mt-1 block w-full" cols="30" rows="5" placeholder="Expense Description"> {!! old('description', '') !!}
+            </x-textarea-input> --}}
+            <textarea name="description" id="description" cols="30" rows="5" class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" :value="old('description', '')" placeholder="Expense Description" > {{ old('description', '') }} </textarea>
             <x-input-error class="mt-2" :messages="$errors->get('description')" />
         </div>
-        
+
         <div>
             <x-input-label for="category_id" :value="__('Category')" />
-            <x-text-input id="category_id" name="category_id" type="text" class="mt-1 block w-full" :value="old('category_id', '')" />
+            {{-- <x-text-input id="category_id" name="category_id" type="text" class="mt-1 block w-full" :value="old('category_id', '')" /> --}}
+            <select name="category_id" id="category_id"
+                class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                <option value="">Select Category</option>
+            </select>
             <x-input-error class="mt-2" :messages="$errors->get('category_id')" />
         </div>
 

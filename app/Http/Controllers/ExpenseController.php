@@ -3,21 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use App\Models\ExpenseCategory;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\Facades\Datatables;
 
 class ExpenseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = cache()->remember('expenses-cache', 10, function () {
-            return Expense::paginate(15, ['title', 'expense_amount', 'quantity']);
-        });
-        return view('expense.list', ['expenses' => $expenses]);
+
+        if ($request->ajax()) {
+            $data = Expense::select('expenses.id', 'title', 'quantity', 'expense_amount', 'category_id', 'created_by', 'expenses.created_at', 'expenses.updated_at')->with('creator');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        // $expenses = cache()->remember('expenses-cache', 10, function () {
+        //     return Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->with('creator')->get();
+        // });
+        // $expenses = Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->get();
+        // $expenses =  Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->with('creator')->limit(1000)->get();
+        // dd($expenses);
+
+        return view('expense.list');
     }
 
     /**
@@ -25,7 +43,8 @@ class ExpenseController extends Controller
      */
     public function create(): View
     {
-        return view('expense.create');
+        $expense_categories = ExpenseCategory::get();
+        return view('expense.create', compact('expense_categories'));
     }
 
     /**
