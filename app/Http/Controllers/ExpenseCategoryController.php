@@ -89,6 +89,12 @@ class ExpenseCategoryController extends Controller
             $data = ExpenseCategory::select('expense_categories.id', 'title', 'description', 'created_by', 'status', 'expense_categories.created_at', 'expense_categories.updated_at')->with('creator');
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('created_at', function ($row) {
+                    return $row->created_at->format('M d, Y');
+                })
+                ->addColumn('updated_at', function ($row) {
+                    return $row->updated_at->format('M d, Y');
+                })
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
                     return $actionBtn;

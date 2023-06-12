@@ -17,7 +17,12 @@ class ExpenseCategory extends Model
     ];
 
     protected $casts = [
-        'status'=> StatusEnum::class,
+        'status' => StatusEnum::class,
+    ];
+
+    protected $dates = [
+        'created_at',
+        'updated_at',
     ];
 
     public function creator()

@@ -22,6 +22,8 @@ class Expense extends Model
         'created_by',
     ];
 
+    protected $dates = ['created_at', 'updated_at'];
+
     public function creator()
     {
         return $this->hasOne(User::class, 'id', 'created_by')->select('users.id', 'name');
