@@ -21,7 +21,15 @@
                     </x-nav-link>
 
                     <x-nav-link :href="route('expense.create')" :active="request()->routeIs('expense.create')">
-                        {{ __('Expense') }}
+                        {{ __('Add Expense') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('expense_category.list')" :active="request()->routeIs('expense_category.list')">
+                        {{ __('Expense Category List') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('expense_category.create')" :active="request()->routeIs('expense_category.create')">
+                        {{ __('Add Expense Category') }}
                     </x-nav-link>
                 </div>
             </div>

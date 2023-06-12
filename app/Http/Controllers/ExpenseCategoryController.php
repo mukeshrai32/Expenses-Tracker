@@ -3,39 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Enums\StatusEnum;
-use App\Models\Expense;
 use App\Models\ExpenseCategory;
-use Illuminate\Http\Response;
-use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Enum;
 use Yajra\DataTables\Facades\Datatables;
 
-class ExpenseController extends Controller
+class ExpenseCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-
-        // $expenses = cache()->remember('expenses-cache', 10, function () {
-        //     return Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->with('creator')->get();
-        // });
-        // $expenses = Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->get();
-        // $expenses =  Expense::select('title', 'quantity', 'expense_amount', 'created_by', 'created_at')->with('creator')->limit(1000)->get();
-        // dd($expenses);
-
-        return view('expense.list');
+        return view('expense_category.list');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create()
     {
-        $expense_categories = ExpenseCategory::where('status', StatusEnum::Active)->get();
-        return view('expense.create', compact('expense_categories'));
+        return view('expense_category.create');
     }
 
     /**
@@ -45,27 +35,23 @@ class ExpenseController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'category_id' => ['required', 'numeric'],
-            'expense_amount' => ['required', 'numeric'],
+            'status' => [new Enum(StatusEnum::class)],
         ]);
 
-        $expense = Expense::create([
+        $expense = ExpenseCategory::create([
             'title' => $request->title,
             'description' => $request->description,
-            'category_id' => $request->category_id,
-            'quantity' => $request->quantity,
-            'expense_amount' => $request->expense_amount,
+            'status' => $request->status,
             'created_by' => Auth::id(),
         ]);
 
-
-        return redirect('expense');
+        return redirect('expense_category');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Expense $expense)
+    public function show(string $id)
     {
         //
     }
@@ -73,7 +59,7 @@ class ExpenseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Expense $expense)
+    public function edit(string $id)
     {
         //
     }
@@ -81,7 +67,7 @@ class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Expense $expense)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -89,19 +75,19 @@ class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense)
+    public function destroy(string $id)
     {
         //
     }
 
     /**
-     * Lists data from storage in json
+     * Lists data from storage in JSON
      */
     public function listJson(Request $request)
     {
         if ($request->ajax()) {
-            $expenses = Expense::select('expenses.id', 'title', 'quantity', 'expense_amount', 'category_id', 'created_by', 'expenses.created_at', 'expenses.updated_at')->with('creator');
-            return Datatables::of($expenses)
+            $data = ExpenseCategory::select('expense_categories.id', 'title', 'description', 'created_by', 'status', 'expense_categories.created_at', 'expense_categories.updated_at')->with('creator');
+            return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';

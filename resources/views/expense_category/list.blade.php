@@ -12,7 +12,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Expenses List') }}
+            {{ __('Expense Category List') }}
         </h2>
     </x-slot>
 
@@ -27,10 +27,9 @@
                             <tr>
                                 <th>SN </th>
                                 <th>Title </th>
-                                <th>Expense Amt.</th>
-                                <th>Quantity </th>
-                                <th>Category </th>
+                                <th>Description </th>
                                 <th>Added By </th>
+                                <th>Status </th>
                                 <th>Created Date </th>
                                 <th>Updated Date </th>
                                 <th>Action </th>
@@ -53,7 +52,7 @@
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('expense.list_json') }}",
+                ajax: "{{ route('expense_category.list_json') }}",
                 columns: [{
                         data: 'id',
                         name: 'id',
@@ -65,20 +64,16 @@
                         name: 'title'
                     },
                     {
-                        data: 'expense_amount',
-                        name: 'expense_amount'
-                    },
-                    {
-                        data: 'quantity',
-                        name: 'quantity'
-                    },
-                    {
-                        data: 'category_id',
-                        name: 'category_id'
+                        data: 'description',
+                        name: 'description'
                     },
                     {
                         data: 'creator.name',
                         name: 'creator.name'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
                     },
                     {
                         data: 'created_at',

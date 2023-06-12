@@ -5,11 +5,11 @@
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Add your Expense.') }}
+            {{ __('Add Expense Category') }}
         </p>
     </header>
 
-    <form method="post" action="{{ route('expense.store') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('expense_category.store') }}" class="mt-6 space-y-6">
         @csrf
 
         <div>
@@ -29,29 +29,15 @@
         </div>
 
         <div>
-            <x-input-label for="category_id" :value="__('Category')" />
-            {{-- <x-text-input id="category_id" name="category_id" type="text" class="mt-1 block w-full" :value="old('category_id', '')" /> --}}
-            <select name="category_id" id="category_id"
+            <x-input-label for="status" :value="__('Category')" />
+            <select name="status" id="status"
                 class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                <option value="">Select Category</option>
-                @forelse ($expense_categories as $cat)
-                    <option value="{{ $cat->id }}" {{ old('status') == $cat->id ? 'selected' : '' }}> {{ $cat->title }} </option>
-                @empty
-                @endforelse
+                <option value="">Select status</option>
+                <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active </option>
+                <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive </option>
             </select>
-            <x-input-error class="mt-2" :messages="$errors->get('category_id')" />
-        </div>
-
-        <div>
-            <x-input-label for="quantity" :value="__('Quantity')" />
-            <x-text-input id="quantity" name="quantity" type="text" class="mt-1 block w-full" :value="old('quantity', '')" autocomplete="Expense Amount" />
-            <x-input-error class="mt-2" :messages="$errors->get('quantity')" />
-        </div>
-
-        <div>
-            <x-input-label for="expense_amount" :value="__('Expense Amount')" />
-            <x-text-input id="expense_amount" name="expense_amount" type="text" class="mt-1 block w-full" :value="old('expense_amount', '')" autocomplete="Expense Amount" />
-            <x-input-error class="mt-2" :messages="$errors->get('expense_amount')" />
+            {{ old('status') }}
+            <x-input-error class="mt-2" :messages="$errors->get('status')" />
         </div>
 
         <div class="flex items-center gap-4">

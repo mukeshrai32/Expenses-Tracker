@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/expense', [ExpenseController::class, 'index'])->name('expense.list');
     Route::get('/expense/create', [ExpenseController::class, 'create'])->name('expense.create');
     Route::post('/expense/store', [ExpenseController::class, 'store'])->name('expense.store');
+    Route::get('/expense/list_json', [ExpenseController::class, 'listJson'])->name('expense.list_json');
+
+    Route::get('/expense_category', [ExpenseCategoryController::class, 'index'])->name('expense_category.list');
+    Route::get('/expense_category/create', [ExpenseCategoryController::class, 'create'])->name('expense_category.create');
+    Route::post('/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store');
+    Route::get('/expense_category/list_json', [ExpenseCategoryController::class, 'listJson'])->name('expense_category.list_json');
 });
 
 require __DIR__ . '/auth.php';
