@@ -55,9 +55,23 @@
         };
 
         const config = {
-            type: 'line', //bar, line, pie
+            type: 'bar', //bar, line, pie, bubble
             data: data,
-            options: {}
+            options: {
+                animation: true,
+                // aspectRatio: 1,
+
+                plugins: {
+                    // title
+                    legend: {
+                        display: true
+                    },
+                    // detail in points
+                    tooltip: {
+                        enabled: true
+                    }
+                }
+            }
         };
 
         const myChart = new Chart(

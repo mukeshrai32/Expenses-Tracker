@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ChartJsController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
@@ -41,6 +42,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/expense_category/create', [ExpenseCategoryController::class, 'create'])->name('expense_category.create');
     Route::post('/expense_category/store', [ExpenseCategoryController::class, 'store'])->name('expense_category.store');
     Route::get('/expense_category/list_json', [ExpenseCategoryController::class, 'listJson'])->name('expense_category.list_json');
+
+    Route::get('/charts', [ChartJsController::class, 'index'])->name('charts.list');
+
 });
 
 require __DIR__ . '/auth.php';
