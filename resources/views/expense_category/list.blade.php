@@ -1,4 +1,3 @@
-
 @section('styles')
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -28,6 +27,7 @@
                                 <th>SN </th>
                                 <th>Title </th>
                                 <th>Description </th>
+                                <th>Avatar </th>
                                 <th>Added By </th>
                                 <th>Status </th>
                                 <th>Created Date </th>
@@ -66,6 +66,10 @@
                     {
                         data: 'description',
                         name: 'description'
+                    },
+                    {
+                        data: 'avatar',
+                        name: 'avatar'
                     },
                     {
                         data: 'creator.name',

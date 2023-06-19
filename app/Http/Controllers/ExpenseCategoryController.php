@@ -7,6 +7,7 @@ use App\Models\ExpenseCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Enum;
 use Yajra\DataTables\Facades\Datatables;
 
@@ -17,6 +18,8 @@ class ExpenseCategoryController extends Controller
      */
     public function index()
     {
+        // $tables = DB::select('SHOW TABLES');
+
         return view('expense_category.list');
     }
 
@@ -38,9 +41,15 @@ class ExpenseCategoryController extends Controller
             'status' => [new Enum(StatusEnum::class)],
         ]);
 
+        // dd($request->file('avatar'));
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar')->store(options: 'avatars');
+        }
         $expense = ExpenseCategory::create([
             'title' => $request->title,
             'description' => $request->description,
+            'avatar' => $avatar,
             'status' => $request->status,
             'created_by' => Auth::id(),
         ]);
@@ -86,9 +95,18 @@ class ExpenseCategoryController extends Controller
     public function listJson(Request $request)
     {
         if ($request->ajax()) {
-            $data = ExpenseCategory::select('expense_categories.id', 'title', 'description', 'created_by', 'status', 'expense_categories.created_at', 'expense_categories.updated_at')->with('creator');
+            $data = ExpenseCategory::select('expense_categories.id', 'title', 'avatar', 'description', 'created_by', 'status', 'expense_categories.created_at', 'expense_categories.updated_at')->with('creator');
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('avatar', function ($row) {
+                    if ($row->avatar) {
+                        return \Storage::disk('avatars')->url($row->avatar);
+
+                        // temporaryUrl() only for online storage ??
+                        // return \Storage::disk('avatars')->temporaryUrl($row->avatar, now()->addMinutes(5));
+                    }
+                    return '';
+                })
                 ->addColumn('created_at', function ($row) {
                     return $row->created_at->format('M d, Y');
                 })

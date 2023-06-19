@@ -9,13 +9,19 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('expense_category.store') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('expense_category.store') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
 
         <div>
             <x-input-label for="title" :value="__('Title')" />
             <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', '')" autofocus autocomplete="title" />
             <x-input-error class="mt-2" :messages="$errors->get('title')" />
+        </div>
+
+        <div>
+            <x-input-label for="avatar" :value="__('Avatar')" />
+            <x-text-input id="avatar" name="avatar" type="file" class="mt-1 block w-full" :value="old('avatar', '')" autofocus />
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 
         <div>
